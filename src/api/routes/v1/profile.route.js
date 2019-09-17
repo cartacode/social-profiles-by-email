@@ -4,7 +4,10 @@ const controller = require('../../controllers/profile.controller');
 const router = express.Router();
 
 router.route('/')
-  .get(controller.list);
+  .get(controller.index);
+
+router.route('/')
+  .post(controller.list);
 
 
 module.exports = router;

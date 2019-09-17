@@ -10,6 +10,7 @@ const routes = require('../api/routes/v1');
 const { logs } = require('./vars');
 const strategies = require('./passport');
 const error = require('../api/middlewares/error');
+const path = require('path');
 
 /**
 * Express instance
@@ -36,21 +37,17 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors({ credentials: true, origin: true }));
-// var allowCrossDomain = function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     // res.header('Access-Control-Allow-Headers', 'Content-Type');
-
-//     next();
-// }
-
-// app.use(allowCrossDomain)
 
 // enable authentication
 app.use(passport.initialize());
 passport.use('jwt', strategies.jwt);
 passport.use('facebook', strategies.facebook);
 passport.use('google', strategies.google);
+
+// add template engine
+app.set('view engine', 'ejs')
+app.set('views',path.join(path.dirname(__dirname), 'views'));
+
 
 // mount api v1 routes
 app.use('/v1', routes);
