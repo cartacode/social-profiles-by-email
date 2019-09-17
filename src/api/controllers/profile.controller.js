@@ -130,7 +130,8 @@ exports.list = async (req, res, next) => {
 
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox']
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        dumpio: true
     });
     const xpath = "div.g div.r a"
     const pageNums = [0, 1]
