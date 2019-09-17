@@ -2,6 +2,13 @@ const httpStatus = require('http-status');
 const { omit } = require('lodash');
 const puppeteer = require('puppeteer');
 
+function wait(interval) {
+	return new Promise(async (resolve) => {
+		await setTimeout(() => {
+			return true
+		}, interval * 1000)
+	})
+}
 
 /**
  * Get hrefs from google search
@@ -25,12 +32,6 @@ function get_hrefs(browser, searchUrl, xpath, pageNum) {
 	      )
 	    );
 
-		if (pageNum == 1) {
-			const t = await page.evaluate( () => {
-				debugger
-				return 'aa'
-			})
-		}
 	    resolve(hrefs);
 	})
 }
@@ -83,8 +84,21 @@ function get_social_links(hrefs, socialDomains, socialLinks) {
 }
 
 /**
+ * Get profile page
+ * @Method: GET
+ */
+
+ exports.index = (req, res, next) => {
+ 	try {
+		res.render('pages/profile');
+	} catch (error) {
+	    next(error);
+	}
+ }
+
+/**
  * Get profile list
- * @public
+ * @Method: POST
  */
 exports.list = async (req, res, next) => {
   try {
@@ -99,9 +113,12 @@ exports.list = async (req, res, next) => {
     ]
 
     // input parameters
-	const firstName = 'rodeny';
-	const lastName = 'steele';
-	const email = 'dinsmoresteele.com';
+	const firstName = req.body.first_name;
+	const lastName = req.body.last_name;
+	let email = req.body.email;
+	if (email && email != '') {
+		email = email.split('@')[1];
+	}
 
 	const searchUrl = `https://www.google.ca/search?q=${firstName}+${lastName}+${email}&ie=UTF-8`
 	let socialLinks = [];
@@ -114,8 +131,11 @@ exports.list = async (req, res, next) => {
 	let filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
 	socialLinks = socialLinks.concat(filtered_links);
 
+	await wait(2);
+
 	hrefs = await get_hrefs(browser, searchUrl, xpath, 1);
  	filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
+ 	console.log(filtered_links, email, firstName, lastName)
 	socialLinks = socialLinks.concat(filtered_links);
 
 	await browser.close();
