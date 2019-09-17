@@ -1,5 +1,201 @@
-<html>
-	<body>
-		<h1>Social Profile</h1>
-	</body>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Email Finder by Leadnyze</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--Import Google Icon Font-->
+        <link href="/static/icon" rel="stylesheet">
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="/static/materialize.min.css">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/main.css">
+
+        <script type="text/javascript" src="chrome-extension://cchofejnakigbabpcnlcglfdjhglepam/js/site-script.js"></script>
+    </head>
+    <body>
+        <!--[if lte IE 9]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+        <![endif]-->
+
+        <div class="content">
+          <nav class="teal" role="navigation">
+            <div class="nav-wrapper container">
+
+            </div>
+          </nav>
+
+          <div class="section">
+            <div class="container">
+
+              <div class="header center">
+                <h1>Email Finder</h1>
+
+                <div class="row center">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="container">
+
+              <div class="row">
+                <form id="email-form" class="col s12 l8 push-l2">
+
+                  <div class="row">
+                    <div class="input-field col s4">
+                      <input placeholder="Elon" id="first_name" name="first_name" type="text" class="validate" data-error="Please enter a first name">
+                      <label for="first_name" class="active">First Name</label>
+                    </div>
+                    <div class="input-field col s4">
+                      <input placeholder=" (optional)" id="middle_name" name="middle_name" type="text" class="validate" data-error="Please enter a last name">
+                      <label for="last_name" class="active">Middle Name</label>
+                    </div>
+                    <div class="input-field col s4">
+                      <input placeholder="Musk" id="last_name" name="last_name" type="text" class="validate" data-error="Please enter a last name">
+                      <label for="last_name" class="active">Last Name</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      <input placeholder="spacex.com" id="domain" name="domain" type="text" class="validate" data-error="Please enter a domain">
+                      <label for="domain" class="active">Domain</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col s6">
+                      <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit</button>
+                    </div>
+                   <div class="col s6">
+
+                     <div id="modal1" class="modal">
+                        <div class="modal-content">
+                          <h4>Modal Header</h4>
+                          <p>A bunch of text</p>
+                        </div>
+                     </div>
+
+
+                      
+                        <div class="file-field input-field">
+                          <div class="btn">
+                            <span>Upload file</span>
+                            <input id="file-input" type="file" onclick="$(this).val(&#39;&#39;)" onchange="readFile()">
+                          </div>
+                          <div class="file-path-wrapper">
+                            <input class="file-path" type="text" style="width: 0">
+                          </div>
+                        </div>
+                      
+                    </div>
+                  </div></form>
+
+                  <div id="result-div">
+                    <table id="results-table">
+                    </table>
+                  </div>
+
+            <div class="section">
+            <div class="container">
+
+              <div class="row center">
+                <h5 id="result" class="header col s12 light"></h5>
+                    <div id="success" class="success-form">
+                        <table id="single-result">
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        </table>
+                        <div class="icons-bar">
+                            <a href="https://leadnyze18.herokuapp.com/">
+                        </a></div><a href="https://leadnyze18.herokuapp.com/">
+                    </a></div><a href="https://leadnyze18.herokuapp.com/">
+              </a></div><a href="https://leadnyze18.herokuapp.com/">
+
+            </a></div><a href="https://leadnyze18.herokuapp.com/">
+          </a></div><a href="https://leadnyze18.herokuapp.com/">
+
+                  <div class="row">
+                    <div class="input-field col s12">
+                    <p class="grey-text">For bulk search, the file should be in the following format: firstname,middlename,lastname,domain - even if middlename is blank</p>
+
+                      <p class="grey-text">Note: The system works best for work domains and may have difficultly finding personal emails (Gmail, Yahoo, etc).</p>
+                    </div>
+                  </div>
+
+                  <div class="loading-cover">
+                    <div class="sk-folding-cube">
+                      <div class="sk-cube1 sk-cube"></div>
+                      <div class="sk-cube2 sk-cube"></div>
+                      <div class="sk-cube4 sk-cube"></div>
+                      <div class="sk-cube3 sk-cube"></div>
+                    </div>
+
+                    <h4>Searching...</h4>
+                  </div>
+                
+              </a></div><a href="https://leadnyze18.herokuapp.com/">
+            </a></div><a href="https://leadnyze18.herokuapp.com/">
+          </a></div><a href="https://leadnyze18.herokuapp.com/">
+
+        </a></div><a href="https://leadnyze18.herokuapp.com/">
+
+        <div id="modal1" class="modal">
+          <form id="email-capture">
+            <div class="modal-content">
+              <h4>We're glad you're finding it useful!</h4>
+              <p>If you'd like to keep using Email Finder, please add your email address.</p>
+
+              <div class="email-input">
+                <div class="input-field">
+                  <input id="email" name="email" type="text" class="validate" data-error="Please enter your email">
+                  <label for="email">Your email address</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class=" modal-action modal-close waves-effect waves-green btn-flat">Submit</button>
+            </div>
+          </form>
+         </div>
+
+        <footer class="page-footer teal">
+          <div class="container">
+            <div class="row">
+              <div class="col l4 s12">
+
+              </div>
+              <div class="col l4 s12">
+
+              </div>
+              <div class="col l4 s12" style="overflow: hidden;">
+                &lt;
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            </div>
+          </div>
+        </footer>
+
+
+        <script src="/static/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="/static/materialize.min.js"></script>
+
+        <script src="/static/main.js"></script>
+
+    
+
+    </a>
+    <div class="hiddendiv common"></div>
+    </body>
 </html>
