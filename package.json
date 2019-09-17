@@ -69,6 +69,7 @@
     "cross-env": "^5.0.1",
     "deathbycaptcha": "0.0.3",
     "dotenv-safe": "^6.0.0",
+    "ejs": "^2.7.1",
     "express": "^4.15.2",
     "express-validation": "^1.0.2",
     "google-search-scraper": "^0.1.0",
