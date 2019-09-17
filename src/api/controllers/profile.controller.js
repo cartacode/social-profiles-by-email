@@ -128,7 +128,7 @@ exports.list = async (req, res, next) => {
     const searchUrl = `https://www.google.ca/search?q=${firstName}+${lastName}+${email}`
     let socialLinks = {};
 
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({headless: true});
     const xpath = "div.g div.r a"
     const pageNums = [0, 1]
     let page;
