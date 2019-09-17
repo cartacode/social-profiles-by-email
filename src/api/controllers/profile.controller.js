@@ -3,6 +3,14 @@ const { omit } = require('lodash');
 const puppeteer = require('puppeteer');
 
 
+/**
+ * Get hrefs from google search
+ * @ params
+ * @Object browser: 	puppeter browser object
+ * @String searchUrl: 	search url
+ * @String xpath: 		xpath of the href on google search page
+ * @Integer pageNum: 	page number of search page
+ */
 function get_hrefs(browser, searchUrl, xpath, pageNum) {
 	return new Promise(async (resolve) => {
 
@@ -27,10 +35,16 @@ function get_hrefs(browser, searchUrl, xpath, pageNum) {
 	})
 }
 
-function hasSameUrl(arr, url) {
+/**
+ * Check if there is an existing value in the given array
+ * @ params
+ * @Arrary arr: arrary
+ * @String val: value that needs to be check
+ */
+function hasExistingValue(arr, val) {
 	let flag = false; // true if given arrary has same url
 	for (let i = 0; i < arr.length; i += 1) {
-		if (arr[i] == url) {
+		if (arr[i] == val) {
 			flag = true;
 			break;
 		}
@@ -39,6 +53,14 @@ function hasSameUrl(arr, url) {
 	return flag;
 }
 
+
+/**
+ * Filter social profile links of person
+ * @ params
+ * @Object browser: 		urls scraped from google search
+ * @String socialDomains: 	social media domains that you want to get
+ * @String socialLinks: 	social profile links of the requested person
+ */
 function get_social_links(hrefs, socialDomains, socialLinks) {
 	let filtered_links = [];
 	return new Promise((resolve) => {
@@ -49,9 +71,7 @@ function get_social_links(hrefs, socialDomains, socialLinks) {
 					url.indexOf('/company/') == -1 &&
 					url.indexOf('/status/') == -1
 				) {
-					console.log('href: ', hrefs[i])
-					if (!hasSameUrl(socialLinks, hrefs[i])) {
-						console.log('filter: ',filtered_links)
+					if (!hasExistingValue(socialLinks, hrefs[i])) {
 						filtered_links.push(hrefs[i])
 					}
 				}
@@ -69,6 +89,8 @@ function get_social_links(hrefs, socialDomains, socialLinks) {
 exports.list = async (req, res, next) => {
   try {
     const response = { 'status': true };
+
+    // social media domains that you want to get by business email
     const socialDomains = [
     	'linkedin.com',
     	'twitter.com',
@@ -76,13 +98,10 @@ exports.list = async (req, res, next) => {
     	'gmail.com',
     ]
 
-	// const firstName = 'rodeny';
-	// const lastName = 'steele';
-	// const email = 'dinsmoresteele.com';
-
-	const firstName = 'collin';
-	const lastName = 'vargo';
-	const email = 'quicktutor.com';
+    // input parameters
+	const firstName = 'rodeny';
+	const lastName = 'steele';
+	const email = 'dinsmoresteele.com';
 
 	const searchUrl = `https://www.google.ca/search?q=${firstName}+${lastName}+${email}&ie=UTF-8`
 	let socialLinks = [];
@@ -94,7 +113,6 @@ exports.list = async (req, res, next) => {
  	let hrefs = await get_hrefs(browser, searchUrl, xpath, 0);
 	let filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
 	socialLinks = socialLinks.concat(filtered_links);
- 	console.log("GGGG: ", socialLinks)
 
 	hrefs = await get_hrefs(browser, searchUrl, xpath, 1);
  	filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
