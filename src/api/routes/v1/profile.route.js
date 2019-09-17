@@ -6,7 +6,7 @@ const router = express.Router();
 router.route('/')
   .get(controller.index);
 
-router.route('/')
+router.route('/find')
   .post(controller.list);
 
 

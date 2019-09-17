@@ -44,9 +44,12 @@ passport.use('jwt', strategies.jwt);
 passport.use('facebook', strategies.facebook);
 passport.use('google', strategies.google);
 
+// load static
+app.use("/static", express.static(path.dirname(__dirname) + '/assets'));
+
 // add template engine
 app.set('view engine', 'ejs')
-app.set('views',path.join(path.dirname(__dirname), 'views'));
+app.set('views', path.join(path.dirname(__dirname), 'views'));
 
 
 // mount api v1 routes
