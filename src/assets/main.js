@@ -126,10 +126,10 @@ function onSubmit(e) {
             if (data.facebook_url) $('.icons-bar').append('<a target="_blank" rel="noopener noreferrer" href="' + data.facebook_url + '" class="facebook"><i class="fa fa-facebook"></i></a>');
             if (data.linkedin_url) $('.icons-bar').append('<a target="_blank" rel="noopener noreferrer" href="' + data.linkedin_url + '" class="linkedin"><i class="fa fa-linkedin"></i></a>');
             if (data.angellist_url) $('.icons-bar').append('<a target="_blank" rel="noopener noreferrer" href="' + data.angellist_url + '" class="angellist"><i class="fa fa-angellist"></i></a>');
+            if (data.instagram_url) $('.icons-bar').append('<a target="_blank" rel="noopener noreferrer" href="' + data.instagram_url + '" class="instagram"><i class="fa fa-instagram"></i></a>');
 
         })
         .fail(function (data) {
-            console.log(data)
             $('#results-table').html('');
             $('#result').html('There was a problem finding the email.');
         })

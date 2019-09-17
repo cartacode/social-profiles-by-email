@@ -18,9 +18,8 @@ function wait(interval) {
  * @String xpath:       xpath of the href on google search page
  * @Integer pageNum:    page number of search page
  */
-function get_hrefs(browser, searchUrl, xpath, pageNum) {
-    return new Promise(async (resolve) => {
-
+async function get_hrefs(browser, searchUrl, xpath, pageNum) {
+    try {
         const page = await browser.newPage();
         await page.goto(searchUrl + '&start=' + pageNum*10);
         await page.waitForSelector(xpath);
@@ -32,8 +31,11 @@ function get_hrefs(browser, searchUrl, xpath, pageNum) {
           )
         );
 
-        resolve(hrefs);
-    })
+        return hrefs;
+    } catch (error) {
+        console.log(`Error when crawling on ${searchUrl}`);
+        return [];
+    }
 }
 
 /**
@@ -70,7 +72,8 @@ function get_social_links(hrefs, socialDomains, socialLinks) {
 
                 if (domain.indexOf(socialDomains[j]) == 0 && 
                     domain.indexOf('/company/') == -1 &&
-                    domain.indexOf('/status/') == -1
+                    domain.indexOf('/status/') == -1 &&
+                    domain.indexOf('/public/') == -1
                 ) {
                     const attr = `${socialDomains[j].replace('.com', '')}_url`
                     if (!hasExistingValue(socialLinks, attr)) {
@@ -110,6 +113,7 @@ exports.list = async (req, res, next) => {
         'linkedin.com',
         'twitter.com',
         'instagram.com',
+        'facebook.com',
         'gmail.com',
     ]
 
@@ -117,24 +121,29 @@ exports.list = async (req, res, next) => {
     const firstName = req.body.first_name;
     const lastName = req.body.last_name;
     let email = req.body.domain; // domain or business email
-    if (email && email != '') {
+    if (email && email != '' && email.indexOf('@') > -1) {
         email = email.split('@')[1];
     }
 
-    const searchUrl = `https://www.google.ca/search?q=${firstName}+${lastName}+${email}&ie=UTF-8`
+    const searchUrl = `https://www.google.ca/search?q=${firstName}+${lastName}+${email}`
     let socialLinks = {};
 
-    const browser = await puppeteer.launch({headless: true});
+    const browser = await puppeteer.launch({headless: false});
     const xpath = "div.g div.r a"
-    const pageNums = [0, 1];
+    const pageNums = [0, 1]
+    let page;
 
-    let hrefs = await get_hrefs(browser, searchUrl, xpath, 0);
-    let filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
-    socialLinks = { ...socialLinks, ...filtered_links }
-
-    hrefs = await get_hrefs(browser, searchUrl, xpath, 1);
-    filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
-    socialLinks = { ...socialLinks, ...filtered_links }
+    for (let index=0; index < pageNums.length ; index ++) {
+        page = pageNums[index];
+        try {
+            // let hrefs = await get_hrefs(browser, searchUrl+`+${domain.replace('.com', '')}`, xpath, 0);
+            let hrefs = await get_hrefs(browser, searchUrl, xpath, page);
+            let filtered_links = await get_social_links(hrefs, socialDomains, socialLinks);
+            socialLinks = { ...socialLinks, ...filtered_links }
+        } catch (e) {
+            console.log('There is a problem when crawling pages: ', e)
+        }
+    }
 
     await browser.close();
 
