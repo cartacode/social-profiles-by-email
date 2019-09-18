@@ -105,7 +105,7 @@ function onSubmit(e) {
     if (!validate(data)) {
         return
     }
-    post(data, e)
+    post(data, e, '/v1/profiles/find')
         .done(function (data) {
             console.log(data)
             if (data.email.constructor === Array && data.email.length > 1) {
@@ -136,7 +136,7 @@ function onSubmit(e) {
 }
 
 
-function post(data, e) {
+function post(data, e, url) {
 
     var loadingCover = $('.loading-cover');
     // Show loading screen
@@ -148,9 +148,9 @@ function post(data, e) {
     $('#single-result').html('');
     $('#results-table').html('');
     $('.icons-bar').html('');
-
+    console.log('aaaa=', data, url)
     return $.ajax({
-        url: "/v1/profiles/find",
+        url: url,
         method: "POST",
         data: JSON.stringify(data),
         timeout: 200000,
@@ -193,7 +193,9 @@ function readFile() {
         csv = csv.replace(/(?:\\[rn]|[\r\n]+)+/g, '\n');
         var lines = csv.split("\n");
         var result = [];
+        console.log(lines)
         for (var i = 1; i < lines.length; i++) {
+            console.log(' iterate : ', i)
             // var obj = {};
             var currentline = lines[i].split(",");
 
@@ -204,7 +206,7 @@ function readFile() {
                 domain: currentline[3]
             };
 
-            post(obj)
+            post(obj, null, '/v1/profiles/find')
                 .done(function (data) {
                     // if ($('#results-table').is(':empty')) {
                     //     $('#results-table').append('<tr><th>Name</th><th>Email Address</th></tr>');
@@ -240,15 +242,18 @@ function readFile() {
                         $('#results-table').append('<tr><th>Name</th><th>Email Address</th>/tr>');
                     }
                 });
+
+            console.log(' number one : ', obj)
             result.push(obj);
         }
+        console.log('@@@@: ', result)
         return result; //JSON
     }
 
-    var pass = prompt("Enter password to use this feature");
+    // var pass = prompt("Enter password to use this feature");
 
-    console.log(hashCode(pass));
-    if(hashCode(pass) === -418368139){
+    // console.log(hashCode(pass));
+    // if(hashCode(pass) === -418368139){
 
         var file = document.getElementById('file-input').files[0];
         //check file type
@@ -264,12 +269,27 @@ function readFile() {
         }
 
 
-    }else{
-        alert("Not authorized")
+    // }else{
+    //     alert("Not authorized")
+    // }
+
+}
+
+
+function uploadFile() {
+    // Form Data
+    var formData = new FormData();
+
+    var fileSelect = document.getElementById("file-input");
+    if(fileSelect.files && fileSelect.files.length == 1){
+     var file = fileSelect.files[0]
+     formData.set("file", file , file.name);
     }
 
-
-
+    // Http Request  
+    var request = new XMLHttpRequest();
+    request.open('POST', "http://localhost:5050/v1/profiles/csv_upload");
+    request.send(formData);
 }
 
 
