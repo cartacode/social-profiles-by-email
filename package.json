@@ -72,7 +72,7 @@
     "dotenv-safe": "^6.0.0",
     "ejs": "^2.7.1",
     "email-existence": "^0.1.6",
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "express-validation": "^1.0.2",
     "fast-csv": "^3.4.0",
     "google-search-scraper": "^0.1.0",
